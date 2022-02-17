@@ -11,6 +11,7 @@ import SwiftyJSON
 
 var falcilar = JSON()
 var falci_detay = JSON()
+var  falci_yorum = JSON()
 var giris = JSON()
 var sifre = JSON()
 

@@ -48,7 +48,14 @@ class ThirdViewController: MyController {
             
         }
     }
-
+    
+    
+    @IBOutlet weak var tumyorumlar_button_outlet: button_desing!{
+        didSet{
+            tumyorumlar_button_outlet.setTitle("Tüm Yorumlar", for: .normal)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,17 +65,10 @@ class ThirdViewController: MyController {
         dismiss(animated: true)
     }
     
+    @IBAction func tumyorumlar_button_action(_ sender: UIButton) {
+        showVC(identifierName: "FourthViewController")
+    }
+    
+    
 }
-extension String {
-    private var htmlToAttributedString: NSAttributedString? {
-            guard let data = data(using: .utf8) else { return nil }
-            do {
-                return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue], documentAttributes: nil)
-            } catch {
-                return nil
-            }
-        }
-        var htmlToString: String {
-            return htmlToAttributedString?.string ?? ""
-        }
-}
+
