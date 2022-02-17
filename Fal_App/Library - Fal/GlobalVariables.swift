@@ -12,6 +12,8 @@ import SwiftyJSON
 var falcilar = JSON()
 var falci_detay = JSON()
 var giris = JSON()
+var sifre = JSON()
+
 
 var apiURL = "https://api.evafal.com/api"
 var imageBaseURL = "https://panel.evafal.com/uploads"

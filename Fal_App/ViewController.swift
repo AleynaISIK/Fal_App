@@ -67,16 +67,58 @@ class ViewController: MyController {
         post_request_json(email: String(mail_textfield_outlet.text!), sifre: String(sifre_textfield_outlet.text!))
         
 //                post_request_json(email: "mevlut@tutkal.app", sifre: "mirac2011")
-        
-        /*
-         if  falcilar["data"]["isSuccess"].boolValue == true{
-         
-         showVC(identifierName: "OneViewController")}
-         else{
-         messageBox(title: "Hatalı Giriş", message: "Kullanıcı adı veya şifreniz yanlış / eksik ")
-         }
-         */
     }
+    
+    
+    @IBAction func sifremi_unuttum_button_action(_ sender: UIButton) {
+       
+        
+        sifremi_unuttum_button_outlet.addTarget(self, action: #selector(showAlert), for: .touchUpInside)
+    }
+    
+    @objc private func showAlert(){
+        let alert = UIAlertController(
+            title: "Şifremi Unuttum",
+            message: "E-Posta Adresiniz",
+            preferredStyle: .alert)
+        
+        alert.addTextField{ field in
+            field.placeholder = "E-mail Adres"
+            field.returnKeyType = .next
+            field.keyboardType = .emailAddress
+        }
+        
+        alert.addAction(UIAlertAction(title: "Gönder", style: .default, handler: { _ in
+            
+            guard let fields = alert.textFields, fields.count == 1 else {
+                print("burası çalışıyor")
+                return
+            }
+            let emailField = fields [0]
+            guard let email = emailField.text, !email.isEmpty else{
+                self.messageBox(title: "Uyarı", message: "Lütfen Boş Bırakmayın")
+                return
+                
+            }
+            
+            self.sifre_unutma_post_request(email: String(emailField.text!))
+
+            
+           /* if falcilar["data"]["isSuccess"].boolValue == true
+            {
+                print("GİRDİ")
+
+//                showVC(identifierName: "SecondViewController")
+            }else{
+               messageBox(title: "Uyarı", message: "Lütfen boş bırakmayın")
+            }
+            */
+            
+        }))
+        present(alert, animated: true)
+        
+    }
+    
     @IBAction func back_button_action(_ sender: UIButton) {
         dismiss(animated: true)
     }
@@ -105,7 +147,8 @@ extension ViewController{
                  giris = JSON(value)
                 
                 if giris["isSuccess"].boolValue == true {
-                    showVC(identifierName: "OneViewController")
+                  
+                   showVC(identifierName: "OneViewController")
                 }
                 else {
                     messageBox(title: giris["desc"]["baslik"].stringValue, message: giris["desc"]["mesaj"].stringValue)
@@ -117,5 +160,37 @@ extension ViewController{
             }
         }
     }
-    
+    //ALAMOFIRE JSON
+    func sifre_unutma_post_request(email : String){
+        
+        let parameters : Parameters = [
+            "email" : email
+            
+        ]
+        
+        let url = apiURL + "/sifremiUnuttum"
+        
+        Alamofire.request(url, method: .post,parameters:parameters, encoding: URLEncoding.httpBody).responseJSON {
+            [self]
+            response in
+            switch response.result {
+            case .success(let value):
+                print(value)
+                
+                 sifre = JSON(value)
+                
+//                showVC(identifierName:"OneViewController")
+                if sifre["isSuccess"].boolValue == true {
+                    messageBox(title: sifre["desc"]["baslik"].stringValue, message: sifre["desc"]["mesaj"].stringValue)
+                }
+                else {
+                    messageBox(title: sifre["desc"]["baslik"].stringValue, message: sifre["desc"]["mesaj"].stringValue)
+                }
+                
+                
+            case .failure(let error):
+                Swift.print(error)
+            }
+        }
+    }
 }
