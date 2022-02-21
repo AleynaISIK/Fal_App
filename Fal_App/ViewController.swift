@@ -102,17 +102,6 @@ class ViewController: MyController {
             }
             
             self.sifre_unutma_post_request(email: String(emailField.text!))
-
-            
-           /* if falcilar["data"]["isSuccess"].boolValue == true
-            {
-                print("GİRDİ")
-
-//                showVC(identifierName: "SecondViewController")
-            }else{
-               messageBox(title: "Uyarı", message: "Lütfen boş bırakmayın")
-            }
-            */
             
         }))
         present(alert, animated: true)
@@ -179,7 +168,6 @@ extension ViewController{
                 
                  sifre = JSON(value)
                 
-//                showVC(identifierName:"OneViewController")
                 if sifre["isSuccess"].boolValue == true {
                     messageBox(title: sifre["desc"]["baslik"].stringValue, message: sifre["desc"]["mesaj"].stringValue)
                 }
